@@ -12,14 +12,14 @@ app.factory('beers', ['$http', function ($http) {
   };
 
   beerService.create = function (beer) {
-    return $http.post('/beers', beer).success(function(data){
+    return $http.post('/beers', beer).then(function(data){
       console.log(data);
-      beerService.beers.push(data);
+      beerService.beers.push(data.data);
     });
   };
 
   beerService.delete = function (beer) {
-    $http.delete('/beers/' + beer._id).success(function (data) {
+    $http.delete('/beers/' + beer._id).then(function (data) {
       for (var i = 0; i < beerService.beers.length; i += 1) {
         if (beerService.beers[i]._id === beer._id) {
           beerService.beers.splice(i, 1);
@@ -41,7 +41,7 @@ app.factory('beers', ['$http', function ($http) {
   };
 
   beerService.deleteReview = function(reviewId, beerId) {
-    $http.delete('/beers/' + beerId + '/reviews/' + reviewId).success(function () {
+    $http.delete('/beers/' + beerId + '/reviews/' + reviewId).then(function () {
         var beer = beerService.findById(beerId);
 
         for (var i = 0; i < beer.reviews.length; i += 1) {
